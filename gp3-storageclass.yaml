@@ -1,12 +1,15 @@
+# 01-storageclass.yaml
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: gp3
 provisioner: ebs.csi.aws.com
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Retain
+allowVolumeExpansion: true
 parameters:
   type: gp3
-  fsType: ext4
+  iops: "3000"
+  throughput: "125"
   encrypted: "true"
-volumeBindingMode: WaitForFirstConsumer
-allowVolumeExpansion: true
-reclaimPolicy: Retain
+  fsType: ext4
