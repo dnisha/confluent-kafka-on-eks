@@ -1,0 +1,31 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: KRaftController
+metadata:
+  name: kraftcontroller
+  namespace: confluent
+spec:
+  replicas: 1
+  dataVolumeCapacity: 10Gi
+  storageClass:
+    name: gp3
+  image:
+    application: docker.io/confluentinc/cp-server:7.8.0
+    init: confluentinc/confluent-init-container:2.10.0
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka
+  namespace: confluent
+spec:
+  replicas: 2
+  dataVolumeCapacity: 10Gi
+  storageClass:
+    name: gp3
+  image:
+    application: docker.io/confluentinc/cp-server:7.8.0
+    init: confluentinc/confluent-init-container:2.10.0
+  dependencies:
+    kRaftController:
+      clusterRef:
+        name: kraftcontroller
